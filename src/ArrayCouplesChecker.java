@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ArrayCouplesChecker {
 
@@ -38,10 +39,9 @@ public class ArrayCouplesChecker {
                 }
             }
         }
-        List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < arr.length; i++) {
-            result.add(arr[i]);
-        }
+        List<Integer> result = Arrays.stream(arr)
+                .boxed()
+                .collect(Collectors.toList());
         result.removeAll(pairs);
         if (result.isEmpty()) {
             return "yes";
