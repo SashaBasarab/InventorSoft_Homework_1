@@ -1,6 +1,4 @@
-import java.util.Scanner;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ArrayCouplesChecker {
 
@@ -25,29 +23,30 @@ public class ArrayCouplesChecker {
     }
 
     public static String ArrayChallenge(int[] arr) {
-        Map<Integer, Integer> pairs = new HashMap<>();
-
-        // if a couple exists, I delete it from map and find other elements which don't have a cople
-        for (int i = 0; i < arr.length; i += 2) {
+        List<Integer> pairs = new ArrayList<>();
+        for (int i = 0; i < arr.length - 2; i += 2) {
             int num1 = arr[i];
             int num2 = arr[i + 1];
-
-            if (pairs.containsKey(num2) && pairs.get(num2) == num1) {
-                pairs.remove(num2);
-            } else {
-                pairs.put(num1, num2);
+            for (int j = 2; j < arr.length; j += 2) {
+                int reverseNum1 = arr[j];
+                int reverseNum2 = arr[j + 1];
+                if (num1 == reverseNum2 && num2 == reverseNum1) {
+                    pairs.add(num1);
+                    pairs.add(num2);
+                    pairs.add(reverseNum2);
+                    pairs.add(reverseNum1);
+                }
             }
         }
-        // if the map is empty, there are no elements without couple
-        if (pairs.isEmpty()) {
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            result.add(arr[i]);
+        }
+        result.removeAll(pairs);
+        if (result.isEmpty()) {
             return "yes";
-        } else { // if it's not empty I just print it to the console
-            StringBuilder incorrectPairs = new StringBuilder();
-            for (Map.Entry<Integer, Integer> entry : pairs.entrySet()) {
-                incorrectPairs.append(entry.getKey()).append(",").append(entry.getValue()).append(",");
-            }
-            incorrectPairs.deleteCharAt(incorrectPairs.length() - 1); // Removing the last comma
-            return incorrectPairs.toString();
+        } else {
+            return result.toString();
         }
     }
 }
